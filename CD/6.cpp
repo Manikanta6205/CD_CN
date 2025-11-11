@@ -1,14 +1,7 @@
 #include <iostream>
+#include <stack>
 #include <cstring>
 using namespace std;
-
-char stackOp[50];
-int top = -1;
-
-void push(char c) { stackOp[++top] = c; }
-char pop() { return stackOp[top--]; }
-char peek() { return stackOp[top]; }
-int isEmpty() { return top == -1; }
 
 int prec(char op) {
 	if (op == '+' || op == '-') return 1;
@@ -16,55 +9,55 @@ int prec(char op) {
 	return 0;
 }
 
-void infixToPostfix(char infix[], char postfix[]) {
-	int k = 0;
-	for (int i = 0; infix[i] != '\0'; i++) {
-		char c = infix[i];
-		if (isalnum(c)) postfix[k++] = c;
-		else if (c == '(') push(c);
+void infixToPostfix(const string& infix, string& postfix) {
+	stack<char> st;
+	for (char c : infix) {
+		if (isalnum(c)) postfix += c;
+		else if (c == '(') st.push(c);
 		else if (c == ')') {
-			while (!isEmpty() && peek() != '(')
-				postfix[k++] = pop();
-			pop(); 
+			while (!st.empty() && st.top() != '(') {
+				postfix += st.top();
+				st.pop();
+			}
+			if (!st.empty()) st.pop();
 		} else {
-			while (!isEmpty() && prec(peek()) >= prec(c))
-				postfix[k++] = pop();
-			push(c);
+			while (!st.empty() && prec(st.top()) >= prec(c)) {
+				postfix += st.top();
+				st.pop();
+			}
+			st.push(c);
 		}
 	}
-	while (!isEmpty()) postfix[k++] = pop();
-	postfix[k] = '\0';
+	while (!st.empty()) {
+		postfix += st.top();
+		st.pop();
+	}
 }
 
-void generateTAC(char postfix[]) {
-	char st[50][10];
-	int top2 = -1, t = 1;
-	for (int i = 0; postfix[i] != '\0'; i++) {
-		char c = postfix[i];
+void generateTAC(const string& postfix) {
+	stack<string> st;
+	int t = 1;
+	for (char c : postfix) {
 		if (isalnum(c)) {
-			char temp[2] = {c, '\0'};
-			strcpy(st[++top2], temp);
+			st.push(string(1, c));
 		} else {
-			char op2[10], op1[10], res[10];
-			strcpy(op2, st[top2--]);
-			strcpy(op1, st[top2--]);
-			sprintf(res, "t%d", t++);
+			string op2 = st.top(); st.pop();
+			string op1 = st.top(); st.pop();
+			string res = "t" + to_string(t++);
 			cout << res << " = " << op1 << " " << c << " " << op2 << endl;
-			strcpy(st[++top2], res);
+			st.push(res);
 		}
 	}
 }
 
 int main() {
-	char infix[50], postfix[50];
+	string infix, postfix;
 	cout << "Enter expression: ";
-	cin.getline(infix, 50);
+	getline(cin, infix);
 
 	infixToPostfix(infix, postfix);
 	cout << "\nPostfix: " << postfix << endl;
 
 	cout << "\nThree Address Code:\n";
 	generateTAC(postfix);
-
-	return 0;
 }
