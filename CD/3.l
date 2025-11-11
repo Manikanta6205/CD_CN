@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "y.tab.h"
+extern int yylval;
 %}
 
 %%
@@ -11,4 +12,4 @@
 .               { return yytext[0]; }
 %%
 
-int yywrap(void) { return 1; }
+int yywrap(void) { return 1; 
