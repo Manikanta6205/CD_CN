@@ -9,7 +9,7 @@ char START;
 /* ============== COMPUTE FIRST ============== */
 set<char> computeFIRST(char X) {
     // If X is terminal → FIRST(X) = {X}
-    if (!isupper(X))
+    if (islower(X))
         return {X};
 
     if (!FIRST[X].empty())
@@ -50,7 +50,7 @@ void computeFOLLOW(char X) {
         for (string rhs : p.second) {
             for (int i = 0; i < rhs.size(); i++) {
                 if (rhs[i] == X) {
-                    if (i + 1 < rhs.size() && !isupper(rhs[i + 1]))
+                    if (i + 1 < rhs.size() && islower(rhs[i + 1]))
                         FOLLOW[X].insert(rhs[i + 1]);
 
                     else if (i + 1 < rhs.size() && isupper(rhs[i + 1])) {
