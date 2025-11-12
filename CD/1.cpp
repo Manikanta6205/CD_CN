@@ -1,22 +1,10 @@
 #include<bits/stdc++.h>
 using namespace std;
 
-// List of C/C++ keywords (including data types)
-set<string> C_CPP_KEYWORDS = {
-    "auto", "break", "case", "char", "const", "continue", "default", "do",
-    "double", "else", "enum", "extern", "float", "for", "goto", "if",
-    "int", "long", "register", "return", "short", "signed", "sizeof",
-    "static", "struct", "switch", "typedef", "union", "unsigned", "void",
-    "volatile", "while", "main", "namespace", "public", "private", "protected",
-    "class", "friend", "virtual", "template", "this", "new", "delete", "try",
-    "catch", "throw", "inline", "using", "export", "mutable"
-};
-
 // Regular expressions for various components
 const regex KEYWORD_PATTERN(
     R"(\b(?:auto|break|case|char|const|continue|default|do|double|else|enum|extern|float|for|goto|if|int|long|register|return|short|signed|sizeof|static|struct|switch|typedef|union|unsigned|void|volatile|while|main|namespace|public|private|protected|class|friend|virtual|template|this|new|delete|try|catch|throw|inline|using|export|mutable)\b)"
 );
-const regex IDENTIFIER_PATTERN(R"(\b[A-Za-z_][A-Za-z0-9_]*\b)");
 const regex OPERATOR_PATTERN(R"([+\-*/%=<>!&|^~]|<<|>>|::)");
 const regex SPECIAL_SYMBOL_PATTERN(R"([{}();,.\[\]])");
 
