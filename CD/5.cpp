@@ -10,7 +10,6 @@ map<string, string> bnf_to_yacc(string bnf) {
         if (line.find("::=") == string::npos) continue;
         string left = line.substr(0, line.find("::="));
         string right = line.substr(line.find("::=") + 3);
-        left.erase(remove_if(left.begin(), left.end(), ::isspace), left.end());
         rules[left] = right;
     }
     return rules;
